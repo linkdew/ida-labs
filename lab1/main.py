@@ -15,9 +15,9 @@ def setIntValue(value):
         try:
             value = int(input())
         except ValueError:
-            print("Enter integer value", end=" ")
+            print("Enter integer value: ", end=" ")
         else:
-            print(value)
+            # print(value)
             break
     return value
 
@@ -49,9 +49,3 @@ def main():
 
 
 main()
-
-
-def randomArray(array, length):
-    for _ in range(length):
-        array.append(np.random.rand())
-    return array
