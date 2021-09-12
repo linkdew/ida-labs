@@ -2,13 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def sum(array):
-    result = 0
-    for i in range(len(array)):
-        result += array[i]
-    return result
-
-
 def setIntValue(value):
     while not isinstance(value, int):
         try:
