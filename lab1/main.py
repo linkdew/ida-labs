@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import random
 import numpy as np
 
 
@@ -17,7 +16,6 @@ def setIntValue(value):
         except ValueError:
             print("Enter integer value: ", end=" ")
         else:
-            # print(value)
             break
     return value
 
@@ -36,6 +34,7 @@ def generateNormalizedWeightsVector(dim):
 def main():
     models_count = None
     metrics_count = None
+    metrics = []
 
     print("Enter number of alternative models (n): ", end=" ")
     models_count = setIntValue(models_count)
@@ -43,25 +42,38 @@ def main():
     print("Enter number of quality metrics (m): ", end=" ")
     metrics_count = setIntValue(metrics_count)
 
-    print(models_count, metrics_count)
-    metrics = []
     for i in range(metrics_count):
         metrics.append("metric " + str(i + 1))
 
-    vec = generateNormalizedWeightsVector(metrics_count)
-    dots = generateNormalizedWeightsVector(metrics_count)
-    print(vec, sum(vec))
-
+    barsdata = generateNormalizedWeightsVector(metrics_count)
     x = np.arange(metrics_count)
-    plt.plot(x, dots, 'b', color = "purple")
-    plt.plot(x, dots, 'o', color = "purple")
+    dotsmatrix = []
+    for _ in range(models_count):
+        dotsmatrix.append(generateNormalizedWeightsVector(metrics_count))
 
-    plt.grid(True)
-    plt.bar(metrics, vec, width = 0.25, color = "orange", edgecolor = "grey", alpha = 0.7)
+    figure, bars = plt.subplots()
+    bars.set_ylabel("metrics weights, %")
     plt.ylim(0, 1)
-    plt.xlim(-0.25, len(metrics))
+    plt.xlim(-0.25, len(metrics) - 0.75)
+    plt.grid(True)
+    plt.title("lab plot")
+
+    bars.bar(metrics, barsdata, width=0.25, color="orange", edgecolor="grey", alpha=0.7)
+
+    bars.tick_params(axis='y', labelcolor="purple")
+
+    models = bars.twinx()
+    models.set_xlabel("models weights, %")
+    colors = ["w", "k", "g", "m", "c", "r"] * 10
+    styles = ["8", "^", "v", "*", "s", "D"] * 10
+    for i, color, marker in zip(range(models_count), colors, styles):
+        models.plot(x, dotsmatrix[i], marker=marker, color=color)
+
+    models.tick_params(axis='y', labelcolor="red")
+
+    figure.tight_layout()
+    bars.set_facecolor("grey")
     plt.show()
 
 
 main()
-
