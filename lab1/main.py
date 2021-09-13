@@ -56,14 +56,14 @@ def main():
     plt.grid(True)
     plt.title("lab plot")
 
-    bars.bar(metrics, barsdata, width=0.25, color="orange", edgecolor="grey", alpha=0.7)
+    bars.bar(metrics, barsdata, width=0.2, color="orange", edgecolor="black", alpha=0.7)
     bars.tick_params(axis='y', labelcolor="purple")
 
     models = bars.twinx()
 
     models.set_ylabel("models weights, %")
-    colors = ["w", "k", "g", "m", "c", "r"] * 10
-    styles = ["8", "^", "v", "*", "s", "D"] * 10
+    colors = ["w", "k", "g", "m", "c", "r", "b"] * 100
+    styles = ["8", "^", "v", "*", "s", "D", "p"] * 100
     for i, color, marker in zip(range(models_count), colors, styles):
         models.plot(x, dotsmatrix[i], marker=marker, color=color)
         plt.text(metrics_count - 0.95, dotsmatrix[i][metrics_count - 1], f"model {i + 1}", fontsize=10)
