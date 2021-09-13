@@ -6,8 +6,12 @@ def setIntValue(value):
     while not isinstance(value, int):
         try:
             value = int(input())
+            if value < 1:
+                while value < 1:
+                    print("Enter positive integer value: ", end=" ")
+                    value = int(input())
         except ValueError:
-            print("Enter integer value: ", end=" ")
+            print("Enter positive integer value: ", end=" ")
         else:
             break
     return value
