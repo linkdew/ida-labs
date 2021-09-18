@@ -41,12 +41,19 @@ def main():
 
     for i in range(metrics_count):
         metrics.append("metric " + str(i + 1))
+    metrics.append("aggr")
+    metrics.append("")
 
     barsdata = generateNormalizedWeightsVector(metrics_count)
-    x = np.arange(metrics_count)
+    x = np.arange(metrics_count + 2)
     dotsmatrix = []
     for _ in range(models_count):
         dotsmatrix.append(generateNormalizedWeightsVector(metrics_count))
+
+    dotsmatrix = np.array(dotsmatrix)
+    aggrglobal = np.array(np.dot(dotsmatrix, barsdata)).reshape((models_count, 1))
+    dotsmatrix = np.hstack((dotsmatrix, aggrglobal))
+    dotsmatrix = np.hstack((dotsmatrix, aggrglobal))
 
     figure, bars = plt.subplots()
     bars.set_ylabel("metrics weights, %")
@@ -56,8 +63,10 @@ def main():
     plt.grid(True)
     plt.title("lab plot")
 
+    barsdata.append(0)  # for aggr
+    barsdata.append(0)  # for aggr
     bars.bar(metrics, barsdata, width=0.2, color="orange", edgecolor="black", alpha=0.7)
-    bars.tick_params(axis='y', labelcolor="purple")
+    bars.tick_params(axis='y', labelcolor="grey")
 
     models = bars.twinx()
 
@@ -66,9 +75,9 @@ def main():
     styles = ["8", "^", "v", "*", "s", "D", "p"] * 100
     for i, color, marker in zip(range(models_count), colors, styles):
         models.plot(x, dotsmatrix[i], marker=marker, color=color)
-        plt.text(metrics_count - 0.95, dotsmatrix[i][metrics_count - 1], f"model {i + 1}", fontsize=10)
+        plt.text(metrics_count + 1.1, dotsmatrix[i][metrics_count], f"model {i + 1}", fontsize=10)
 
-    models.tick_params(axis='y', labelcolor="red")
+    models.tick_params(axis='y', labelcolor="grey")
 
     figure.tight_layout()
     bars.set_facecolor("grey")
