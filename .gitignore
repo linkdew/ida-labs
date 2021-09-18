@@ -131,4 +131,5 @@ dmypy.json
 
 # docs
 *.odt
+*.~lock*
 *.pdf
